@@ -3,16 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chatbot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <title>AI Prompt Input</title>
 </head>
 <body>
     <div class="container">
-        <h1>Enter your AI Prompt</h1>
-        <form action="/submit" method="post">
-            <input type="text" name="prompt" placeholder="Type your prompt here..." required>
+        <h1>AI Chatbot</h1>
+        <form id="prompt-form">
+            <textarea id="prompt" name="prompt" rows="4" cols="50" placeholder="Enter your prompt here..."></textarea>
             <button type="submit">Submit</button>
         </form>
+        <div id="response-box">
+            <h2>AI Response:</h2>
+            <p id="response"></p>
+        </div>
     </div>
+    <script>
+        document.getElementById('prompt-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const prompt = document.getElementById('prompt').value;
+            const responseBox = document.getElementById('response');
+            responseBox.textContent = '';
+
+            const response = await fetch('/stream_response', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'prompt': prompt
+                })
+            });
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                responseBox.textContent += decoder.decode(value);
+            }
+        });
+    </script>
 </body>
 </html>

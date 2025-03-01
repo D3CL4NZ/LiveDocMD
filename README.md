@@ -1,4 +1,4 @@
-# My Python Web Server
+# LiveDocMD
 
 This project sets up a simple web server using Flask that allows users to input prompts for an AI model. The user interface features a text box centered on the screen for easy input.
 
