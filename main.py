@@ -1,6 +1,10 @@
 import os
 import openai
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 # Set up your Google Gemini AI API key
 openai.api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
 
