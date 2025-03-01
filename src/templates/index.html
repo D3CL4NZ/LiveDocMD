@@ -8,28 +8,24 @@
 </head>
 <body>
     <div class="container">
-        <h1>AI Chatbot</h1>
         <div id="response-box">
             <div id="response" class="response-content"></div>
         </div>
         <form id="prompt-form">
             <div class="form-group">
                 <textarea id="prompt" name="prompt" rows="1" cols="55" placeholder="Enter your prompt here..."></textarea>
-                <button type="submit">Submit</button>
+                <button type="submit">Generate</button>
             </div>
         </form>
     </div>
     <script>
-        window.setInterval(function() {
-            var elem = document.getElementById('response-box');
-            elem.scrollTop = elem.scrollHeight;
-        }, 500);
-
         document.getElementById('prompt-form').addEventListener('submit', async function(event) {
             event.preventDefault();
-            const prompt = document.getElementById('prompt').value;
-            const responseBox = document.getElementById('response');
-            responseBox.textContent = '';
+            const prompt = document.getElementById('prompt');
+            const button = document.querySelector('button');
+            const responseText = document.getElementById('response');
+            const responseBox = document.getElementById('response-box');
+            responseText.textContent = '';
 
             const response = await fetch('/stream_response', {
                 method: 'POST',
@@ -37,17 +33,36 @@
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: new URLSearchParams({
-                    'prompt': prompt
+                    'prompt': prompt.value
                 })
             });
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
+
+            // This stuff runs after the fetch request is sent
+            prompt.disabled = true; // Disables the text box
+            button.disabled = true; // Disables the submit button
+            button.textContent = 'Wait...'; // Changes the submit button text to "Wait..."
+
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
-                responseBox.textContent += decoder.decode(value);
+                responseText.textContent += decoder.decode(value);
                 responseBox.scrollTop = responseBox.scrollHeight; // Scroll to the bottom
+            }
+
+            prompt.value = ''; // Clears the text box
+            prompt.disabled = false; // Re-enable the text box after the response is done being generated
+            button.disabled = false; // Re-enables the submit button
+            button.textContent = 'Generate'; // Changes the submit button text back to "Generate"
+        });
+
+        // Add event listener for Enter key press on textarea
+        document.getElementById('prompt').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                document.getElementById('prompt-form').dispatchEvent(new Event('submit'));
             }
         });
     </script>
