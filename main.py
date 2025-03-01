@@ -1,20 +1,18 @@
 import os
-import openai
+from google import genai
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
 # Set up your Google Gemini AI API key
-openai.api_key = os.getenv("GOOGLE_GEMINI_API_KEY")
+client = genai.Client(api_key=os.getenv("GOOGLE_GEMINI_API_KEY"))
 
 def get_gemini_response(prompt):
-    response = openai.Completion.create(
-        engine="gemini",
-        prompt=prompt,
-        max_tokens=150
+    response = client.models.generate_content_stream(
+        model="gemini-2.0-flash", contents=prompt
     )
-    return response.choices[0].text.strip()
+    return response
 
 def chatbot():
     print("Hello! I am a chatbot powered by Google Gemini AI. How can I assist you today?")
@@ -24,7 +22,9 @@ def chatbot():
             print("Chatbot: Goodbye!")
             break
         response = get_gemini_response(user_input)
-        print(f"Chatbot: {response}")
+        print(f"Chatbot: ", end="")
+        for chunk in response:
+            print(chunk.text, end="")
 
 if __name__ == "__main__":
     chatbot()
