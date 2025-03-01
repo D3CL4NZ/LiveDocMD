@@ -9,16 +9,22 @@
 <body>
     <div class="container">
         <h1>AI Chatbot</h1>
-        <form id="prompt-form">
-            <textarea id="prompt" name="prompt" rows="4" cols="50" placeholder="Enter your prompt here..."></textarea>
-            <button type="submit">Submit</button>
-        </form>
         <div id="response-box">
-            <h2>AI Response:</h2>
-            <p id="response"></p>
+            <div id="response" class="response-content"></div>
         </div>
+        <form id="prompt-form">
+            <div class="form-group">
+                <textarea id="prompt" name="prompt" rows="1" cols="55" placeholder="Enter your prompt here..."></textarea>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
     </div>
     <script>
+        window.setInterval(function() {
+            var elem = document.getElementById('response-box');
+            elem.scrollTop = elem.scrollHeight;
+        }, 500);
+
         document.getElementById('prompt-form').addEventListener('submit', async function(event) {
             event.preventDefault();
             const prompt = document.getElementById('prompt').value;
@@ -41,6 +47,7 @@
                 const { done, value } = await reader.read();
                 if (done) break;
                 responseBox.textContent += decoder.decode(value);
+                responseBox.scrollTop = responseBox.scrollHeight; // Scroll to the bottom
             }
         });
     </script>
