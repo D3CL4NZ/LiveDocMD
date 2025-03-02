@@ -12,9 +12,7 @@
         <div id = "welcome-message">Welcome to LiveDocMD!</div>
     </div>
 
-    <div class="history-box">
-        
-    </div>
+    <div class="history-box">History</div>
 
     <!--For some inexplicable reason, this is required-->
     <div class="outer-div">
@@ -34,6 +32,66 @@
         <p class="footer">Kaycee-Marie Rigor, Cooper Waddington, Declan Zevan</p>
     </div>
     <script>
+        // history part
+        function saveConversation(summary, conversationText) {
+            let conversationHistory = localStorage.getItem('conversation_history')
+
+            if (conversationHistory) {
+                conversationHistory = JSON.parse(conversationHistory);
+            }
+            else {
+                conversationHistory = []
+            }
+        }
+
+        const conversationDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        const newItem = {
+            id: Date.now(), // Unique numeric ID
+            conversation_date: conversationDate,
+            summary: summary, // The short summary text
+            conversation_text: conversationText // Full conversation
+        };
+
+        conversationHistory.unshift(newItem);
+
+        // Save the array back to localStorage (stringified)
+        localStorage.setItem(
+            'conversation_history',
+            JSON.stringify(conversationHistory)
+        );
+
+
+        function loadHistory() {
+            const historyBox = document.getElementById('history-box');
+            // Keep the heading, so reset to just "<h2>History</h2>"
+            historyBox.innerHTML = '<h2>History</h2>';
+
+            let conversationHistory = localStorage.getItem('conversation_history');
+
+            if (conversationHistory) {
+                conversationHistory = JSON.parse(conversationHistory);
+            } else {
+                conversationHistory = [];
+            }
+
+            // For each conversation, create a clickable div
+            conversationHistory.forEach((item) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('history-item');
+                // We'll show date and summary
+                itemDiv.textContent = `${item.conversation_date} — ${item.summary}`;
+
+                // Optionally, click to load or show the full conversation
+                itemDiv.addEventListener('click', () => {
+                    alert(`Full Conversation:\n\n${item.conversation_text}`);
+                    // Or you could put item.conversation_text into #response
+                    // document.getElementById('response').textContent = item.conversation_text;
+                });
+
+                historyBox.appendChild(itemDiv);
+            });
+        }
 
         document.getElementById('prompt-form').addEventListener('submit', async function(event) {
             event.preventDefault();
@@ -42,7 +100,8 @@
             const button = document.querySelector('button');
             const responseText = document.getElementById('response');
             const responseBox = document.getElementById('response-box');
-            responseText.textContent = '';
+
+            responseText.textContent = ''; // Clear the response box
 
             const response = await fetch('/stream_response', {
                 method: 'POST',
@@ -68,13 +127,28 @@
                 const { done, value } = await reader.read();
                 if (done) break;
                 responseText.textContent += decoder.decode(value);
+                fullConversationText += chunk;  
                 responseBox.scrollTop = responseBox.scrollHeight; // Scroll to the bottom
             }
+
+            const userPrompt = prompt.value.trim();
+            const shortSummary = userPrompt.length > 30
+                ? userPrompt.slice(0, 30) + '...'
+                : userPrompt;
+
+            saveConversation(shortSummary, fullConversationText);
+
+            loadHistory();
+
 
             prompt.value = ''; // Clears the text box
             prompt.disabled = false; // Re-enable the text box after the response is done being generated
             button.disabled = false; // Re-enables the submit button
             button.textContent = 'Generate'; // Changes the submit button text back to "Generate"
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHistory();
         });
 
         // Add event listener for Enter key press on textarea
