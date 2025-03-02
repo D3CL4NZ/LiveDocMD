@@ -12,7 +12,11 @@
         <div id = "welcome-message">Welcome to LiveDocMD!</div>
     </div>
 
-    <div class="history-box">History</div>
+    <div class="history-box" id="history-box">History</div>
+    <div class="how-it-works-box">
+        <h2>How To Use</h2>
+        <p>Input symptoms, medical history, and lifestyle information, LiveDocMD uses Gemini AI and machine learning to analyze your data. Our site cross-references medical conditions, offering you possible diagnoses along with a breakdown of potential causes. Whether you're managing chronic conditions or looking for immediate advice, we provide insights and guide you toward the next steps, such as consulting with a healthcare professional.</p>
+    </div>
 
     <!--For some inexplicable reason, this is required-->
     <div class="outer-div">
@@ -28,65 +32,64 @@
             </form>
         </div>
     </div>
-    <div class="sticky-footer">
+
+    <div class="about-livedoc-box">
+        <h2>About Us</h2>
+        <p>Welcome to LiveDocMD – your personal AI-powered health companion. Our mission is to empower you with smarter healthcare solutions by providing quick, reliable, and accurate health diagnosis assistance right at your fingertips.</p>
+
+        <h2>What We Do</h2>
+        <p>LiveDocMD is an innovative website that uses  artificial intelligence to help you better understand your health. Whether you're experiencing symptoms or just looking for general health advice, with the help of Gemini AI it analyzes your input and provides you with possible health diagnoses and recommendations. Our goal is to help you make informed decisions about your well-being and take proactive steps toward improving your health.</p><br/><br/><br/>
         <p class="footer">Kaycee-Marie Rigor, Cooper Waddington, Declan Zevan</p>
     </div>
+
     <script>
         // history part
         function saveConversation(summary, conversationText) {
-            let conversationHistory = localStorage.getItem('conversation_history')
-
-            if (conversationHistory) {
-                conversationHistory = JSON.parse(conversationHistory);
-            }
-            else {
-                conversationHistory = []
-            }
-        }
-
-        const conversationDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-        const newItem = {
-            id: Date.now(), // Unique numeric ID
-            conversation_date: conversationDate,
-            summary: summary, // The short summary text
-            conversation_text: conversationText // Full conversation
-        };
-
-        conversationHistory.unshift(newItem);
-
-        // Save the array back to localStorage (stringified)
-        localStorage.setItem(
-            'conversation_history',
-            JSON.stringify(conversationHistory)
-        );
-
-
-        function loadHistory() {
-            const historyBox = document.getElementById('history-box');
-            // Keep the heading, so reset to just "<h2>History</h2>"
-            historyBox.innerHTML = '<h2>History</h2>';
-
             let conversationHistory = localStorage.getItem('conversation_history');
-
             if (conversationHistory) {
                 conversationHistory = JSON.parse(conversationHistory);
             } else {
                 conversationHistory = [];
             }
 
-            // For each conversation, create a clickable div
-            conversationHistory.forEach((item) => {
+            const conversationDate = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+            const newItem = {
+                id: Date.now(),                // Unique numeric ID
+                conversation_date: conversationDate,
+                summary: summary,              // Short summary from user's prompt
+                conversation_text: conversationText // Full conversation
+            };
+
+            conversationHistory.unshift(newItem);
+
+            localStorage.setItem('conversation_history', JSON.stringify(conversationHistory));
+        }
+
+
+        function loadHistory() {
+            const historyBox = document.getElementById('history-box');
+
+            historyBox.innerHTML = '<h2>History</h2>';
+
+            let conversationHistory = localStorage.getItem('conversation_history');
+            if (conversationHistory) {
+                conversationHistory = JSON.parse(conversationHistory);
+            } else {
+                conversationHistory = [];
+            }
+
+            conversationHistory.forEach(item => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('history-item');
-                // We'll show date and summary
+
+                // Show date + summary text
                 itemDiv.textContent = `${item.conversation_date} — ${item.summary}`;
 
-                // Optionally, click to load or show the full conversation
+                // Click handler to reveal the full conversation
                 itemDiv.addEventListener('click', () => {
                     alert(`Full Conversation:\n\n${item.conversation_text}`);
-                    // Or you could put item.conversation_text into #response
-                    // document.getElementById('response').textContent = item.conversation_text;
+                    
                 });
 
                 historyBox.appendChild(itemDiv);
@@ -121,15 +124,22 @@
             button.disabled = true; // Disables the submit button
             button.textContent = 'Wait...'; // Changes the submit button text to "Wait..."
 
+            let fullConversationText = "Symptoms: " + prompt.value + "\n\n"
+
             responseText.textContent += "Symptoms: " + prompt.value + '\n\n'; // Adds the prompt to the response box
 
             while (true) {
                 const { done, value } = await reader.read();
                 if (done) break;
                 responseText.textContent += decoder.decode(value);
-                fullConversationText += chunk;  
+                fullConversationText += decoder.decode(value);  
                 responseBox.scrollTop = responseBox.scrollHeight; // Scroll to the bottom
             }
+
+            prompt.value = ''; // Clears the text box
+            prompt.disabled = false; // Re-enable the text box after the response is done being generated
+            button.disabled = false; // Re-enables the submit button
+            button.textContent = 'Generate'; // Changes the submit button text back to "Generate"
 
             const userPrompt = prompt.value.trim();
             const shortSummary = userPrompt.length > 30
@@ -139,12 +149,6 @@
             saveConversation(shortSummary, fullConversationText);
 
             loadHistory();
-
-
-            prompt.value = ''; // Clears the text box
-            prompt.disabled = false; // Re-enable the text box after the response is done being generated
-            button.disabled = false; // Re-enables the submit button
-            button.textContent = 'Generate'; // Changes the submit button text back to "Generate"
         });
 
         document.addEventListener('DOMContentLoaded', () => {

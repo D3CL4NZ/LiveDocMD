@@ -7,7 +7,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 70vh;
     margin: 0;
 }
 
@@ -112,25 +112,46 @@ button:disabled {
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
-.sticky-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-color: #fff;
-    padding: 10px;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
 .history-box {
     margin: 0;
     padding: 25px;
     position: absolute;
     height: 55%;
     overflow: auto;
+    width: 175px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    border: 2px solid #7886C7;
+    background: #A9B5DF;
+}
+
+.how-it-works-box {
+    margin-top: 190px;
+    margin-right: 10px;
+    padding: 25px;
+    position: absolute;
+    right: 0; /* Anchor to the right side of the page */
+    height: 45%;
+    overflow: auto;
     width: 200px;
     flex-shrink: 0;
     border-radius: 50px;
     border: 2px solid #7886C7;
     background: #A9B5DF;
+}
+
+.about-livedoc-box {
+    margin: 0;
+    padding: 25px;
+    position: absolute;
+    overflow: auto;
+    width: 96%;
+    flex-shrink: 0;
+    border-radius: 50px;
+    border: 2px solid #7886C7;
+    background: #A9B5DF;
+}
+
+p.footer {
+    text-align: center;
 }
