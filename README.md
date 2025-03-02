@@ -1,39 +1,41 @@
 # LiveDocMD
 
-This project sets up a simple web server using Flask that allows users to input prompts for an AI model. The user interface features a text box centered on the screen for easy input.
+LiveDocMD is an innovative website that uses artificial intelligence to help you better understand your health. Whether you're experiencing symptoms or just looking for general health advice, with the help of Gemini AI it analyzes your input and provides you with possible health diagnoses and recommendations. Our goal is to help you make informed decisions about your well-being and take proactive steps toward improving your health.
 
 ## Project Structure
 
 ```
-my-python-web-server
+livedocmd
 ├── src
-│   ├── app.py          # Main entry point of the web server
+│   ├── app.py          # Main entry point of the application
 │   ├── templates
 │   │   └── index.html  # HTML structure for the web page
 │   └── static
-│       └── styles.css  # CSS styles for the web page
+│       ├── styles.css  # CSS styles for the web page
+│       ├── favicon.ico # The favicon
+│       └── logo.png    # Our logo
 ├── requirements.txt     # Project dependencies
 └── README.md            # Project documentation
 ```
 
 ## Requirements
 
-To run this project, you need to have Python installed. You can install the required dependencies using the following command:
+To run this project, you need to have Python installed. You can install the required dependencies using the following command inside your `venv`:
 
 ```
 pip install -r requirements.txt
 ```
 
-## Running the Web Server
+## Running the Application
 
 1. Navigate to the project directory:
    ```
-   cd my-python-web-server
+   cd livedocmd
    ```
 
 2. Run the application:
    ```
-   python src/app.py
+   python3 src/app.py
    ```
 
 3. Open your web browser and go to `http://127.0.0.1:5000` to access the web application.
