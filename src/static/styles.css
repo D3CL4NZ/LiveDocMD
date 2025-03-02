@@ -140,6 +140,10 @@ button:disabled {
     background: #A9B5DF;
 }
 
+.how-it-works-box p {
+    font-family: 'Inter Tight';
+}
+
 .about-livedoc-box {
     margin: 0;
     padding: 25px;
@@ -150,6 +154,10 @@ button:disabled {
     border-radius: 50px;
     border: 2px solid #7886C7;
     background: #A9B5DF;
+}
+
+.about-livedoc-box p {
+    font-family: 'Inter Tight';
 }
 
 p.footer {
