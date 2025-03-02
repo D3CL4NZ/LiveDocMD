@@ -43,7 +43,7 @@ button {
     padding: 10px 20px;
     border: none;
     border-radius: 12px;
-    background-color: #3660b8;
+    background-color: #325bb1;
     color: white;
     cursor: pointer;
     margin-left: 10px;
@@ -131,6 +131,6 @@ button:disabled {
     width: 200px;
     flex-shrink: 0;
     border-radius: 50px;
-    border: 2px solid #D6CAB4;
-    background: #F6EDDC;
+    border: 2px solid #7886C7;
+    background: #A9B5DF;
 }
