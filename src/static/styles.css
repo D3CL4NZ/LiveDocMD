@@ -15,10 +15,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: white;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 80%;
     max-width: 600px;
 }
@@ -34,16 +32,18 @@ textarea {
     flex: 1;
     padding: 10px;
     border-radius: 12px;
-    border: 1px solid #ccc;
+    background: #f6eddc;
+    border: 1px solid #d6cab4;
     resize: none;
-    width: 100%;
+    width: 700px;
+    height: 153px;
 }
 
 button {
     padding: 10px 20px;
     border: none;
     border-radius: 12px;
-    background-color: #007BFF;
+    background-color: #3660b8;
     color: white;
     cursor: pointer;
     margin-left: 10px;
@@ -59,15 +59,30 @@ button:disabled {
     cursor: not-allowed;
 }
 
+#welcome-message {
+    margin-top: 0px;
+    color: #3660B8;
+    font-family: Arial;
+    font-size: 46px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-align: center;
+}
+
 #response-box {
     margin-top: 0px;
     margin-bottom: 20px;
     text-align: left;
     max-height: 300px;
     overflow-y: auto;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 25px;
+    /*border-radius: 4px;*/
     width: 100%;
+
+    border-radius: 50px;
+    border: 2px solid #D6CAB4;
+    background: #F6EDDC;
 }
 
 .response-content {
@@ -83,6 +98,7 @@ button:disabled {
 
 .sticky-header img {
     flex-shrink: 0;
+    float: right;
     width: 177px;
     height: 186px;
     display: block;
@@ -91,3 +107,27 @@ button:disabled {
     border: 1px solid #000;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
+
+.sticky-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.history-box {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    height: 100%;
+    overflow: auto;
+    width: 348px;
+    flex-shrink: 0;
+    border-radius: 50px;
+    border: 2px solid #D6CAB4;
+    background: #F6EDDC;
+}
+

@@ -9,6 +9,11 @@
 <body>
     <div class="sticky-header">
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" />
+        <div id = "welcome-message">Welcome to LiveDocMD!</div>
+    </div>
+
+    <div class="history-box">
+        
     </div>
 
     <!--For some inexplicable reason, this is required-->
@@ -19,15 +24,20 @@
             </div>
             <form id="prompt-form">
                 <div class="form-group">
-                    <textarea id="prompt" name="prompt" required="true" rows="1" cols="55" placeholder="Enter your prompt here..."></textarea>
+                    <textarea id="prompt" name="prompt" required="true" rows="1" cols="55" placeholder="Enter your symptoms here..."></textarea>
                     <button type="submit">Generate</button>
                 </div>
             </form>
         </div>
     </div>
+    <div class="sticky-footer">
+        <p class="footer">Kaycee-Marie Rigor, Cooper Waddington, Declan Zevan</p>
+    </div>
     <script>
+
         document.getElementById('prompt-form').addEventListener('submit', async function(event) {
             event.preventDefault();
+
             const prompt = document.getElementById('prompt');
             const button = document.querySelector('button');
             const responseText = document.getElementById('response');
@@ -51,6 +61,8 @@
             prompt.disabled = true; // Disables the text box
             button.disabled = true; // Disables the submit button
             button.textContent = 'Wait...'; // Changes the submit button text to "Wait..."
+
+            responseText.textContent += "Symptoms: " + prompt.value + '\n\n'; // Adds the prompt to the response box
 
             while (true) {
                 const { done, value } = await reader.read();
