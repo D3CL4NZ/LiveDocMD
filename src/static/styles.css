@@ -125,6 +125,10 @@ button:disabled {
     background: #A9B5DF;
 }
 
+.history-box p {
+    font-family: 'Inter Tight';
+}
+
 .how-it-works-box {
     margin-top: 190px;
     margin-right: 10px;
