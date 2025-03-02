@@ -85,6 +85,10 @@ button:disabled {
     background: #F6EDDC;
 }
 
+#response-box:has(.response-content:empty) {
+    display: none;
+}
+
 .response-content {
     white-space: pre-wrap; /* Preserve whitespace and line breaks */
 }
@@ -120,11 +124,11 @@ button:disabled {
 
 .history-box {
     margin: 0;
-    padding: 0;
+    padding: 25px;
     position: absolute;
     height: 100%;
     overflow: auto;
-    width: 348px;
+    width: 200px;
     flex-shrink: 0;
     border-radius: 50px;
     border: 2px solid #D6CAB4;
