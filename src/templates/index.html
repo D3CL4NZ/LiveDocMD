@@ -7,16 +7,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
-        <div id="response-box">
-            <div id="response" class="response-content"></div>
-        </div>
-        <form id="prompt-form">
-            <div class="form-group">
-                <textarea id="prompt" name="prompt" required="true" rows="1" cols="55" placeholder="Enter your prompt here..."></textarea>
-                <button type="submit">Generate</button>
+    <div class="sticky-header">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" />
+    </div>
+
+    <!--For some inexplicable reason, this is required-->
+    <div class="outer-div">
+        <div class="container">
+            <div id="response-box">
+                <div id="response" class="response-content"></div>
             </div>
-        </form>
+            <form id="prompt-form">
+                <div class="form-group">
+                    <textarea id="prompt" name="prompt" required="true" rows="1" cols="55" placeholder="Enter your prompt here..."></textarea>
+                    <button type="submit">Generate</button>
+                </div>
+            </form>
+        </div>
     </div>
     <script>
         document.getElementById('prompt-form').addEventListener('submit', async function(event) {
