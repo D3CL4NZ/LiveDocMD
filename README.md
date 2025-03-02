@@ -29,12 +29,17 @@ pip install -r requirements.txt
 ## Running the Application
 
 1. Navigate to the project directory:
-   ```
+   ```zsh
    cd livedocmd
    ```
 
-2. Run the application:
+2. Create a `.env` file for your API key:
+   ```zsh
+   echo "GOOGLE_GEMINI_API_KEY='[REDACTED]'" > .env
    ```
+
+2. Run the application:
+   ```zsh
    python3 src/app.py
    ```
 
